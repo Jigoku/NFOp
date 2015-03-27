@@ -72,8 +72,6 @@ sub main {
 		Gtk2::Gdk::Color->new (0xf000,0xf000,0xf000)
 	);
 	
-	
-
 	#background
 	$builder->get_object( 'colourbutton_bg' )->set_color(
 		Gtk2::Gdk::Color->new (0x0000,0x0000,0x0000)
@@ -87,7 +85,6 @@ sub main {
 
 	# main loop
 	Gtk2->main();
-
 }
 
 sub on_about_clicked {
@@ -99,6 +96,17 @@ sub on_about_clicked {
 }
 
 sub on_openfile_clicked {
+	my $filternfo = Gtk2::FileFilter->new();
+	$filternfo->add_pattern("*.nfo");
+	$filternfo->set_name("nfo files");
+
+	my $filterall = Gtk2::FileFilter->new();
+	$filterall->add_pattern("*");
+	$filterall->set_name("all");
+	
+
+	$filechooser->add_filter($filternfo);
+	$filechooser->add_filter($filterall);
 	$filechooser->run;
 	$filechooser->hide;
 }
