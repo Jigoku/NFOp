@@ -197,6 +197,13 @@ sub on_menuitem_statusbar_activate {
 	}
 }
 
+sub on_menuitem_copy_activate {
+	my $clipboard =  Gtk2::Clipboard->get(Gtk2::Gdk->SELECTION_CLIPBOARD);
+	my $buffer = $textview->get_buffer;
+
+	$buffer->copy_clipboard($clipboard);
+}
+
 sub gtk_main_quit {
 	 $window->destroy; Gtk2->main_quit();
 	 exit(0);

@@ -33,6 +33,7 @@
           <object class="GtkAction" id="menuitem_copy">
             <property name="stock_id">gtk-copy</property>
             <property name="name">menuitem_copy</property>
+            <signal handler="on_menuitem_copy_activate" name="activate" swapped="no"/>
           </object>
         </child>
         <child>
@@ -283,18 +284,32 @@ Creative Commons (Attribution 3.0 Unported)
           </packing>
         </child>
         <child>
-          <object class="GtkScrolledWindow" id="scrolledwindow">
+          <object class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
+            <property name="can_focus">False</property>
             <child>
-              <object class="GtkTextView" id="textview">
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="border_width">5</property>
-                <property name="editable">False</property>
-                <property name="cursor_visible">False</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <child>
+                  <object class="GtkTextView" id="textview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="border_width">5</property>
+                    <property name="editable">False</property>
+                    <property name="cursor_visible">False</property>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>

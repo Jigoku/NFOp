@@ -180,6 +180,7 @@ Creative Commons (Attribution 3.0 Unported)
                         <property name="can_focus">False</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
+                        <signal name="activate" handler="on_menuitem_copy_activate" swapped="no"/>
                       </widget>
                     </child>
                   </widget>
@@ -316,18 +317,32 @@ Creative Commons (Attribution 3.0 Unported)
           </packing>
         </child>
         <child>
-          <widget class="GtkScrolledWindow" id="scrolledwindow">
+          <widget class="GtkHBox" id="hbox1">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="hscrollbar_policy">automatic</property>
+            <property name="can_focus">False</property>
             <child>
-              <widget class="GtkTextView" id="textview">
+              <placeholder/>
+            </child>
+            <child>
+              <widget class="GtkScrolledWindow" id="scrolledwindow">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <property name="border_width">5</property>
-                <property name="editable">False</property>
-                <property name="cursor_visible">False</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <child>
+                  <widget class="GtkTextView" id="textview">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="border_width">5</property>
+                    <property name="editable">False</property>
+                    <property name="cursor_visible">False</property>
+                  </widget>
+                </child>
               </widget>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </widget>
           <packing>
