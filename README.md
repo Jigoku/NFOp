@@ -2,6 +2,9 @@
 NFO Viewer for *nix, using Gtk2/perl
 * A small application to display scene release *.nfo files
 
+## Releases
+* [0.1 (bugs)](https://github.com/Jigoku/nfop/releases/tag/0.1)
+
 ## Features
 * [Codepage 437](https://en.wikipedia.org/wiki/Code_page_437) display
 * Colour/font customization
