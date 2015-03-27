@@ -8,4 +8,4 @@ NFO Viewer for *nix, using Gtk2/perl
 
 ## Screenshot
 
-![nfop screenshot](data/screenshot.png)
+![screenshot1](https://cloud.githubusercontent.com/assets/1535179/6871652/0cd67fb4-d49c-11e4-89a4-14c021e06ac9.png)
