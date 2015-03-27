@@ -23,7 +23,6 @@ use utf8;
 use Gtk2 qw(init);
 use FindBin qw($Bin); 
 use File::Basename;
-#use Encode qw(encode decode);
 
 my $version	= "0.01";
 my $xml	= $Bin . "/data/gui.xml";
@@ -40,9 +39,7 @@ my (
 );
 
 
-
 main();
-
 gtk_main_quit();
 
 
@@ -68,14 +65,14 @@ sub main {
 	#font
 	set_default_font("Monospace 7");
 	
-	#foreground
+	#default foreground
 	$builder->get_object( 'colourbutton_fg' )->set_color(
-		Gtk2::Gdk::Color->new (0xf000,0xf000,0xf000)
+		Gtk2::Gdk::Color->new (0xf000,0xf000,0xf000) # white
 	);
 	
-	#background
+	#default background
 	$builder->get_object( 'colourbutton_bg' )->set_color(
-		Gtk2::Gdk::Color->new (0x0000,0x0000,0x0000)
+		Gtk2::Gdk::Color->new (0x0000,0x0000,0x0000) # black
 	);
 
 	set_bg_colour();
@@ -92,23 +89,26 @@ sub on_about_clicked {
 	# launch about dialog
 	my $about = $builder->get_object( 'aboutdialog' );
 	$about->run;
-	# make sure it goes away when closed/x
+	# make sure it goes away when destroyed
 	$about->hide;
 }
 
 sub on_openfile_clicked {
+	# filerchooser filter
 	my $filternfo = Gtk2::FileFilter->new();
 	$filternfo->add_pattern("*.nfo");
 	$filternfo->set_name("nfo files");
 
+	# filerchooser filter
 	my $filterall = Gtk2::FileFilter->new();
 	$filterall->add_pattern("*");
 	$filterall->set_name("all");
 	
-
 	$filechooser->add_filter($filternfo);
 	$filechooser->add_filter($filterall);
 	$filechooser->run;
+	
+	# make sure it goes away when destroyed
 	$filechooser->hide;
 }
 
@@ -117,16 +117,22 @@ sub on_button_openfile_clicked($) {
 	
 	my $text;
 	
+	# open the file with codepage 437 encoding
 	open FILE, "<:encoding(CP437)", $filechooser->get_filename or die $!;
 	
 	while (<FILE>){
+		# parse to a string
 		$text .= $_;
 	}
 	
 	close FILE;
+	
 	my $buffer = $textview->get_buffer;
+	
+	# set the textview buffer
 	$buffer->set_text($text);
 	
+	# show filename in statusbar
 	$builder->get_object( 'status_label' )->set_text(
 		basename($filechooser->get_filename)
 	);
@@ -137,6 +143,7 @@ sub on_fontbutton_font_set {
 }
 
 sub set_textview_font($) {
+	# convert font string to font
 	$textview->modify_font(	
 		Gtk2::Pango::FontDescription->from_string(
 			shift
@@ -145,8 +152,10 @@ sub set_textview_font($) {
 }
 
 sub set_bg_colour {
+	# sets the background colour of the textview widget
 	my $colour = $builder->get_object( 'colourbutton_bg' )->get_color->to_string;
 	
+	# convert #000000000000 to 0x0000 0x0000 0x0000 as hex
 	my $red = substr($colour, 1, 4);
 	my $green = substr($colour, 5, 4);
 	my $blue = substr($colour, 9, 4);
@@ -166,6 +175,7 @@ sub set_bg_colour {
 }
 
 sub set_fg_colour {
+	# not implemented
 	my $colour = $builder->get_object( 'colourbutton_fg' )->get_color->to_string;
 	
 	my $red = substr($colour, 1, 4);
@@ -176,12 +186,8 @@ sub set_fg_colour {
 
 }
 
-sub get_colour($) {
-	my $object = $builder->get_object( shift );
-	return $object->get_color;
-}
-
 sub set_default_font($) {
+	# set the default font
 	my $font = shift;
 	$fontbutton->set_font_name($font);
 	set_textview_font($font);
@@ -190,6 +196,7 @@ sub set_default_font($) {
 sub on_menuitem_statusbar_activate {
 	my $sb = $builder->get_object( 'statusbar' );
 	
+	# toggle visibility of the statusbar
 	if ($sb->visible == 1) {
 		$sb->hide_all(); 
 	} else { 
@@ -198,15 +205,18 @@ sub on_menuitem_statusbar_activate {
 }
 
 sub on_menuitem_copy_activate {
+	# create a clipboard object
 	my $clipboard =  Gtk2::Clipboard->get(Gtk2::Gdk->SELECTION_CLIPBOARD);
+	
+	# set selected text to the clipboard
 	my $buffer = $textview->get_buffer;
-
 	$buffer->copy_clipboard($clipboard);
 }
 
 sub gtk_main_quit {
-	 $window->destroy; Gtk2->main_quit();
-	 exit(0);
+	# cleanup and exit
+	$window->destroy; Gtk2->main_quit();
+	exit(0);
 }
 
 
