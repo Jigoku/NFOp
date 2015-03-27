@@ -22,7 +22,8 @@ use utf8;
 
 use Gtk2 qw(init);
 use FindBin qw($Bin); 
-use Encode qw(encode decode);
+use File::Basename;
+#use Encode qw(encode decode);
 
 my $version	= "0.01";
 my $xml	= $Bin . "/data/gui.xml";
@@ -125,6 +126,10 @@ sub on_button_openfile_clicked($) {
 	close FILE;
 	my $buffer = $textview->get_buffer;
 	$buffer->set_text($text);
+	
+	$builder->get_object( 'status_label' )->set_text(
+		basename($filechooser->get_filename)
+	);
 }
 
 sub on_fontbutton_font_set {
@@ -180,6 +185,16 @@ sub set_default_font($) {
 	my $font = shift;
 	$fontbutton->set_font_name($font);
 	set_textview_font($font);
+}
+
+sub on_menuitem_statusbar_activate {
+	my $sb = $builder->get_object( 'statusbar' );
+	
+	if ($sb->visible == 1) {
+		$sb->hide_all(); 
+	} else { 
+		$sb->show_all(); 
+	}
 }
 
 sub gtk_main_quit {

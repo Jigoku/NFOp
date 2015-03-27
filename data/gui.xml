@@ -36,6 +36,20 @@
           </object>
         </child>
         <child>
+          <object class="GtkAction" id="menu_view">
+            <property name="name">menu_view</property>
+            <property name="label" translatable="yes">View</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkAction" id="menuitem_statusbar">
+            <property name="stock_id">gtk-properties</property>
+            <property name="name">menuitem_statusbar</property>
+            <property name="label">statusbar</property>
+            <signal handler="on_menuitem_statusbar_activate" name="activate" swapped="no"/>
+          </object>
+        </child>
+        <child>
           <object class="GtkAction" id="menu_help">
             <property name="name">menu_help</property>
             <property name="label" translatable="yes">_Help</property>
@@ -59,6 +73,9 @@
         </menu>
         <menu action="menu_edit">
           <menuitem action="menuitem_copy"/>
+        </menu>
+        <menu action="menu_view">
+          <menuitem action="menuitem_statusbar"/>
         </menu>
         <menu action="menu_help">
           <menuitem action="menuitem_about"/>
@@ -248,7 +265,7 @@ Creative Commons (Attribution 3.0 Unported)
               </packing>
             </child>
             <child>
-              <object class="GtkFixed" id="fixed1">
+              <object class="GtkFixed" id="fixed">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
               </object>
@@ -284,6 +301,32 @@ Creative Commons (Attribution 3.0 Unported)
             <property name="expand">True</property>
             <property name="fill">True</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkStatusbar" id="statusbar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">2</property>
+            <child>
+              <object class="GtkLabel" id="status_label">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="xpad">5</property>
+                <property name="ypad">5</property>
+                <property name="single_line_mode">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
           </packing>
         </child>
       </object>
