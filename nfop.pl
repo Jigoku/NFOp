@@ -38,6 +38,8 @@ my (
 	$buffer,
 );
 
+my $text = "";
+
 
 main();
 gtk_main_quit();
@@ -115,10 +117,11 @@ sub on_openfile_clicked {
 sub on_button_openfile_clicked($) {
 	$filechooser->hide;
 	
-	my $text;
-	
 	# open the file with codepage 437 encoding
 	open FILE, "<:encoding(CP437)", $filechooser->get_filename or die $!;
+	
+	# reinitialize
+	$text = "";
 	
 	while (<FILE>){
 		# parse to a string
@@ -131,6 +134,9 @@ sub on_button_openfile_clicked($) {
 	
 	# set the textview buffer
 	$buffer->set_text($text);
+	
+	# update the colour
+	set_fg_colour();
 	
 	# show filename in statusbar
 	$builder->get_object( 'status_label' )->set_text(
@@ -182,7 +188,18 @@ sub set_fg_colour {
 	my $green = substr($colour, 5, 4);
 	my $blue = substr($colour, 9, 4);
 	
-	print "foreground colour not implemented. \n";
+	# create a tag to hold the custom colour
+	# we get segfaults if the tag exists, so this hack
+	# just makes a randomly named tag.
+	my $tag = $buffer->create_tag (
+		rand(10000)."_foreground", 
+		foreground => Gtk2::Gdk::Color->parse($colour)->to_string
+	);
+	
+	# apply the tag to entire buffer
+	my $start = $buffer->get_iter_at_offset (0);
+	my $end = $buffer->get_iter_at_offset (length($text));
+    $buffer->apply_tag ($tag, $start, $end);
 
 }
 
