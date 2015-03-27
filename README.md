@@ -1,4 +1,4 @@
-# NFOp
+# nfop
 NFO Viewer for *nix, using Gtk2/perl
 * A small application to display scene release *.nfo files
 
@@ -8,4 +8,4 @@ NFO Viewer for *nix, using Gtk2/perl
 
 ## Screenshot
 
-![NFOp screenshot](data/screenshot.png)
+![nfop screenshot](data/screenshot.png)
