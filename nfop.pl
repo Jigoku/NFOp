@@ -24,7 +24,7 @@ use Gtk2 qw(init);
 use FindBin qw($Bin); 
 use File::Basename;
 
-my $version	= "0.01";
+my $version	= "0.1";
 my $xml	= $Bin . "/data/gui.xml";
 
 if ( ! -e $xml ) { die "** Interface: '$xml' $!"; }
