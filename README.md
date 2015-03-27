@@ -1,9 +1,9 @@
 # NFOp
-NFO Viewer for *nix
-* A small application to render scene *.nfo files
+NFO Viewer for *nix, using Gtk2/perl
+* A small application to render scene release *.nfo files
 
 ## Features
-* [Codepage 437](https://en.wikipedia.org/wiki/Code_page_437) rendering
+* [Codepage 437](https://en.wikipedia.org/wiki/Code_page_437) display
 * Colour/font customization
 
 ## Screenshot
