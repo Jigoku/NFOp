@@ -25,7 +25,10 @@ use FindBin qw($Bin);
 use File::Basename;
 
 my $version	= "0.2";
-my $xml	= $Bin . "/data/gui.xml";
+
+my $data = $Bin . "/data/";
+#my $data = "/usr/local/share/nfop/data/";
+my $xml	= $data . "gui.xml";
 my $conf = $ENV{ HOME } . "/.nfop";
 
 if ( ! -e $xml ) { die "[-] Interface: '$xml' $!"; }
@@ -62,7 +65,7 @@ sub load_config {
 	# read "~/.nfop" settings
 	open FILE, "<$conf" or die "[-] Could not open filename: $!\n";
 	foreach my $line (<FILE>) {
-		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; }
+		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; } 
 		if ($line =~ m/^bg=\"(.+)\"/) { $conf_bg = $1; }
 		if ($line =~ m/^fg=\"(.+)\"/) { $conf_fg = $1; }
 	}
@@ -79,8 +82,10 @@ sub main {
 	$window = $builder->get_object( 'window' );
 	$builder->connect_signals( undef );
 
-my $navIco = Gtk2::Gdk::Pixbuf->new_from_file("./data/icon48.png");
-$window->set_default_icon($navIco);
+	# set the application icon
+	$window->set_default_icon(
+		Gtk2::Gdk::Pixbuf->new_from_file($data."icon48.png");
+	);
 
 	# object definitions
 	$filechooser = $builder->get_object( 'filechooserdialog' );
