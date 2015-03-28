@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# nfop
+# nfop v0.2
 # A gtk2/perl based nfo viewer
 #
 # Copyright (C) 2015 Ricky K. Thomson
@@ -24,10 +24,20 @@ use Gtk2 qw(init);
 use FindBin qw($Bin); 
 use File::Basename;
 
-my $version	= "0.1";
+my $version	= "0.2";
 my $xml	= $Bin . "/data/gui.xml";
+my $conf = $ENV{ HOME } . "/.nfop";
 
-if ( ! -e $xml ) { die "** Interface: '$xml' $!"; }
+if ( ! -e $xml ) { die "[-] Interface: '$xml' $!"; }
+
+if ( ! -e $conf ) { 
+	print "creating config: " . $conf . "\n"; 
+	open FILE, ">", $conf or warn $!; 
+	print FILE "font=\"Monospace 7\"\n";
+	print FILE "bg=\"#000000000000\"\n";
+	print FILE "fg=\"#f000f000f000\"\n";
+	close FILE;
+}
 
 my (
 	$builder, 
@@ -36,16 +46,30 @@ my (
 	$textview,
 	$fontbutton,
 	$buffer,
+	$conf_bg,
+	$conf_fg,
+	$conf_font,
 );
 
 my $text = "";
 
-
+load_config();
 main();
 gtk_main_quit();
 
 
+sub load_config {
+	# read "~/.nfop" settings
+	open FILE, "<$conf" or die "[-] Could not open filename: $!\n";
+	foreach my $line (<FILE>) {
+		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; }
+		if ($line =~ m/^bg=\"(.+)\"/) { $conf_bg = $1; }
+		if ($line =~ m/^fg=\"(.+)\"/) { $conf_fg = $1; }
+	}
+}
+
 sub main {
+	
 	$builder = Gtk2::Builder->new();
 	
 	# load glade XML
@@ -54,6 +78,9 @@ sub main {
 	# get top level object
 	$window = $builder->get_object( 'window' );
 	$builder->connect_signals( undef );
+
+my $navIco = Gtk2::Gdk::Pixbuf->new_from_file("./data/icon48.png");
+$window->set_default_icon($navIco);
 
 	# object definitions
 	$filechooser = $builder->get_object( 'filechooserdialog' );
@@ -65,16 +92,16 @@ sub main {
 	$window->set_default_size(425, 450);
 
 	#font
-	set_default_font("Monospace 7");
-	
+	set_default_font($conf_font);
+
 	#default foreground
 	$builder->get_object( 'colourbutton_fg' )->set_color(
-		Gtk2::Gdk::Color->new (0xf000,0xf000,0xf000) # white
+		Gtk2::Gdk::Color->parse($conf_fg)
 	);
 	
 	#default background
 	$builder->get_object( 'colourbutton_bg' )->set_color(
-		Gtk2::Gdk::Color->new (0x0000,0x0000,0x0000) # black
+		Gtk2::Gdk::Color->parse($conf_bg)
 	);
 
 	set_bg_colour();
@@ -146,7 +173,10 @@ sub on_button_openfile_clicked($) {
 
 sub on_fontbutton_font_set {
 	set_textview_font($fontbutton->get_font_name);
+	$conf_font = $fontbutton->get_font_name;
 }
+
+
 
 sub set_textview_font($) {
 	# convert font string to font
@@ -160,6 +190,9 @@ sub set_textview_font($) {
 sub set_bg_colour {
 	# sets the background colour of the textview widget
 	my $colour = $builder->get_object( 'colourbutton_bg' )->get_color->to_string;
+	
+	# update config var
+	$conf_bg = $colour;
 	
 	# convert #000000000000 to 0x0000 0x0000 0x0000 as hex
 	my $red = substr($colour, 1, 4);
@@ -183,6 +216,9 @@ sub set_bg_colour {
 sub set_fg_colour {
 	# not implemented
 	my $colour = $builder->get_object( 'colourbutton_fg' )->get_color->to_string;
+	
+	# update config var
+	$conf_fg = $colour;
 	
 	my $red = substr($colour, 1, 4);
 	my $green = substr($colour, 5, 4);
@@ -231,6 +267,13 @@ sub on_menuitem_copy_activate {
 }
 
 sub gtk_main_quit {
+	# store changed settings
+	open FILE, ">$conf" or die "[-] Could not open filename: $!\n";
+	print FILE "font=\"$conf_font\"\n";
+	print FILE "bg=\"$conf_bg\"\n";
+	print FILE "fg=\"$conf_fg\"\n";
+	close FILE;
+	
 	# cleanup and exit
 	$window->destroy; Gtk2->main_quit();
 	exit(0);
