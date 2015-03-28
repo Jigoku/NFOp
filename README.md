@@ -10,4 +10,5 @@ NFO Viewer for *nix, using Gtk2/perl
 ![screenshot1](https://cloud.githubusercontent.com/assets/1535179/6871652/0cd67fb4-d49c-11e4-89a4-14c021e06ac9.png)
 
 ### Releases
+* [0.2 (bones)](https://github.com/Jigoku/nfop/releases/tag/0.2)
 * [0.1 (bugs)](https://github.com/Jigoku/nfop/releases/tag/0.1)
