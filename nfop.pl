@@ -84,7 +84,7 @@ sub main {
 
 	# set the application icon
 	$window->set_default_icon(
-		Gtk2::Gdk::Pixbuf->new_from_file($data."icon48.png");
+		Gtk2::Gdk::Pixbuf->new_from_file($data."icon48.png")
 	);
 
 	# object definitions
@@ -127,19 +127,20 @@ sub on_about_clicked {
 	$about->hide;
 }
 
-sub on_openfile_clicked {
-	# filerchooser filter
-	my $filternfo = Gtk2::FileFilter->new();
-	$filternfo->add_pattern("*.nfo");
-	$filternfo->set_name("nfo files");
-
-	# filerchooser filter
-	my $filterall = Gtk2::FileFilter->new();
-	$filterall->add_pattern("*");
-	$filterall->set_name("all");
+sub create_filefilter($$) {
+	#create a file filter
+	my ($pattern, $name) = @_;
 	
-	$filechooser->add_filter($filternfo);
-	$filechooser->add_filter($filterall);
+	my $filter = Gtk2::FileFilter->new();
+	$filter->add_pattern($pattern);
+	$filter->set_name($name);
+	$filechooser->add_filter($filter);
+}
+
+
+sub on_openfile_clicked {
+	create_filefilter("*.nfo", "nfo files");
+	create_filefilter("*", "all files");
 	$filechooser->run;
 	
 	# make sure it goes away when destroyed
