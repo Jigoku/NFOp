@@ -1,6 +1,9 @@
-config.sh
+.gitignore
+LICENSE
+README.md
 data/gui.glade
 data/gui.xml
 data/icon48.png
 data/icon128.png
+install
 nfop
