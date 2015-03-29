@@ -224,6 +224,8 @@ sub set_fg_colour {
 	# create a tag to hold the custom colour
 	# we get segfaults if the tag exists, so this hack
 	# just makes a randomly named tag.
+	#  NOTE, maybe use $buffer->remove ($tag) 
+	
 	my $tag = $buffer->create_tag (
 		rand(10000)."_foreground", 
 		foreground => Gtk2::Gdk::Color->parse($colour)->to_string
