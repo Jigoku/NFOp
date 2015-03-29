@@ -21,7 +21,7 @@ use warnings;
 use utf8;
 
 use Gtk2 qw(init);
-use Glib qw(TRUE FALSE);
+
 use FindBin qw($Bin); 
 use File::Basename;
 
@@ -83,20 +83,12 @@ sub main {
 	$window = $builder->get_object( 'window' );
 	$builder->connect_signals( undef );
 
-	# set the application icon
-	$window->set_default_icon(
-		Gtk2::Gdk::Pixbuf->new_from_file($data."icon48.png")
-	);
-
 	# object definitions
 	$filechooser = $builder->get_object( 'filechooserdialog' );
 	$textview = $builder->get_object( 'textview' );
 	$fontbutton = $builder->get_object('fontbutton');
 	$buffer = $textview->get_buffer;
 	
-	# appplication defaults
-	$window->set_default_size(520, 660);
-
 	#font
 	set_default_font($conf_font);
 
