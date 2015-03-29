@@ -12,3 +12,9 @@ NFO Viewer for *nix, using Gtk2/perl
 ### Releases
 * [0.2 (bones)](https://github.com/Jigoku/nfop/releases/tag/0.2)
 * [0.1 (bugs)](https://github.com/Jigoku/nfop/releases/tag/0.1)
+
+### Install nfop
+```
+# DESTDIR=/usr/local/ ./install
+
+```
