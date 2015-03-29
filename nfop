@@ -15,17 +15,15 @@
 # u should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-
 use strict;
 use warnings;
 use utf8;
 
 use Gtk2 qw(init);
-
 use FindBin qw($Bin); 
 use File::Basename;
 
-my $version	= "0.2";
+my $version	= "0.3";
 
 my $data = $Bin . "/data/";
 #my $data = "/usr/local/share/nfop/data/";
@@ -274,7 +272,9 @@ sub gtk_main_quit {
 	close FILE;
 	
 	# cleanup and exit
-	$window->destroy; Gtk2->main_quit();
+	$window->destroy;
+	
+	 Gtk2->main_quit();
 	exit(0);
 }
 
