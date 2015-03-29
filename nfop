@@ -21,6 +21,7 @@ use warnings;
 use utf8;
 
 use Gtk2 qw(init);
+use Glib qw(TRUE FALSE);
 use FindBin qw($Bin); 
 use File::Basename;
 

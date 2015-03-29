@@ -44,9 +44,9 @@
         </child>
         <child>
           <object class="GtkAction" id="menuitem_statusbar">
-            <property name="stock_id">gtk-properties</property>
+            <property name="stock_id">gtk-sort-ascending</property>
             <property name="name">menuitem_statusbar</property>
-            <property name="label">statusbar</property>
+            <property name="label">Statusbar</property>
             <signal handler="on_menuitem_statusbar_activate" name="activate" swapped="no"/>
           </object>
         </child>

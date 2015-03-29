@@ -194,7 +194,7 @@ Creative Commons (Attribution 3.0 Unported)
                     <property name="can_focus">False</property>
                     <child>
                       <widget class="GtkImageMenuItem" id="menuitem_statusbar">
-                        <property name="label">statusbar</property>
+                        <property name="label">Statusbar</property>
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="use_stock">False</property>
@@ -203,7 +203,7 @@ Creative Commons (Attribution 3.0 Unported)
                           <widget class="GtkImage" id="image1">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="stock">gtk-properties</property>
+                            <property name="stock">gtk-sort-ascending</property>
                           </widget>
                         </child>
                       </widget>
