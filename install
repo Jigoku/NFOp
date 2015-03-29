@@ -1,0 +1,12 @@
+#!/bin/sh
+DESTDIR=${DESTDIR:-/usr/local/}
+gtk-builder-convert data/gui.glade data/gui.xml
+mkdir -p $DESTDIR/{share/nfop,bin}
+
+perl -pi'*.bak' -e's,\ \$Bin\ .\ \"/data/\",\"\'$DESTDIR'\/share\/nfop\/\",' nfop
+
+install -Dm644 data/gui.xml $DESTDIR/share/nfop/gui.xml
+install -Dm644 data/icon48.png $DESTDIR/share/nfop/icon48.png
+install -Dm644 data/icon128.png $DESTDIR/share/nfop/icon128.png
+install -Dm755 nfop $DESTDIR/bin/nfop
+
