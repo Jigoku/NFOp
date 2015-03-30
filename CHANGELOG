@@ -1,0 +1,22 @@
+master
+-----------------------------
+  * fix gdk colour decoding
+  * interface cleanups
+  * added install script
+
+
+0.2 bones 29/03/2015
+-----------------------------
+  add support to store user settings
+
+
+0.1 bugs 28/03/2015
+-----------------------------
+  first release
+
+  features
+  * background colour 
+  * foreground colour
+  * font selection
+  * statusbar
+  * clipboard support
