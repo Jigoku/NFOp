@@ -110,15 +110,15 @@ sub main {
 	
 	$window->set_default_size($conf_w, $conf_h);
 
-	#default foreground
-	$builder->get_object( 'colourbutton_fg' )->set_color(
-		Gtk2::Gdk::Color->parse($conf_fg)
-	);
-	
-	#default background
-	$builder->get_object( 'colourbutton_bg' )->set_color(
-		Gtk2::Gdk::Color->parse($conf_bg)
-	);
+	# foreground colour button
+	my $colourbutton_fg = $builder->get_object( 'colourbutton_fg' );
+	$colourbutton_fg->set_color(Gtk2::Gdk::Color->parse($conf_fg));
+	$colourbutton_fg->set_tooltip_markup( "foreground colour" );
+
+	# background colour button
+	my $colourbutton_bg = $builder->get_object( 'colourbutton_bg' );
+	$colourbutton_bg->set_color(Gtk2::Gdk::Color->parse($conf_bg));
+	$colourbutton_bg->set_tooltip_markup( "background colour" );
 
 	my $file = $ARGV[0];
 	if (defined $file) { 
@@ -224,6 +224,8 @@ sub set_textview_font($) {
 			shift
 		)
 	);
+	
+
 }
 
 sub set_bg_colour {
@@ -266,7 +268,7 @@ sub set_fg_colour {
 	# apply the tag to entire buffer
 	my $start = $buffer->get_iter_at_offset (0);
 	my $end = $buffer->get_iter_at_offset (length($text));
-    $buffer->apply_tag ($tag, $start, $end);
+	$buffer->apply_tag ($tag, $start, $end);
 
 }
 
