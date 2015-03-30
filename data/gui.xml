@@ -105,15 +105,15 @@
     <property name="website_label" translatable="yes">nfop @ github</property>
     <property name="license" translatable="yes">Code:
 General Public License v3.0
-_https://www.gnu.org/licenses/gpl-3.0.html_
+https://www.gnu.org/licenses/gpl-3.0.html
 
 Artwork:
 Creative Commons (Attribution 3.0 Unported) 
 &lt;https://creativecommons.org/licenses/by/3.0/&gt;</property>
     <property name="authors">Ricky Thomson
-_https://github.com/jigoku_</property>
+https://github.com/jigoku</property>
     <property name="artists">Victor Petrovich Ivlichev
-_https://www.iconfinder.com/krasnoyarsk_</property>
+https://www.iconfinder.com/krasnoyarsk</property>
     <property name="logo">icon128.png</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox1">
@@ -189,10 +189,9 @@ _https://www.iconfinder.com/krasnoyarsk_</property>
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">nfop</property>
     <property name="window_position">mouse</property>
-    <property name="default_width">520</property>
-    <property name="default_height">660</property>
     <property name="icon">icon48.png</property>
     <signal handler="gtk_main_quit" name="destroy" swapped="no"/>
+    <signal handler="on_window_check_resize" name="check_resize" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox">
         <property name="visible">True</property>

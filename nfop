@@ -38,9 +38,23 @@ my (
 	$conf_bg,
 	$conf_fg,
 	$conf_font,
+	$conf_w,
+	$conf_h,
 );
 
 my $text = "";
+
+# create the user config
+if ( ! -e $conf ) { 
+	print "creating config: " . $conf . "\n"; 
+	open FILE, ">", $conf or warn $!; 
+	print FILE "font=\"Monospace 8\"\n";
+	print FILE "bg=\"#000000000000\"\n";
+	print FILE "fg=\"#f000f000f000\"\n";
+	print FILE "w=\"520\"\n";
+	print FILE "h=\"660\"\n";
+	close FILE;
+}
 
 load_config();
 main();
@@ -54,6 +68,8 @@ sub load_config {
 		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; } 
 		if ($line =~ m/^bg=\"(.+)\"/) { $conf_bg = $1; }
 		if ($line =~ m/^fg=\"(.+)\"/) { $conf_fg = $1; }
+		if ($line =~ m/^w=\"(.+)\"/) { $conf_w = $1; }
+		if ($line =~ m/^h=\"(.+)\"/) { $conf_h = $1; }
 	}
 }
 
@@ -68,15 +84,6 @@ sub main {
 	# check libglade xml exists
 	if ( ! -e $xml ) { die "Interface: '$xml' $!"; }
 
-	# create the user config
-	if ( ! -e $conf ) { 
-		print "creating config: " . $conf . "\n"; 
-		open FILE, ">", $conf or warn $!; 
-		print FILE "font=\"Monospace 8\"\n";
-		print FILE "bg=\"#000000000000\"\n";
-		print FILE "fg=\"#f000f000f000\"\n";
-		close FILE;
-	}
 	
 	$builder = Gtk2::Builder->new();
 	
@@ -95,6 +102,8 @@ sub main {
 	
 	#font
 	set_default_font($conf_font);
+	
+	$window->set_default_size($conf_w, $conf_h);
 
 	#default foreground
 	$builder->get_object( 'colourbutton_fg' )->set_color(
@@ -280,12 +289,18 @@ sub on_menuitem_copy_activate {
 	$buffer->copy_clipboard($clipboard);
 }
 
+sub on_window_check_resize {
+		($conf_w, $conf_h) = $window->get_size;
+}
+
 sub gtk_main_quit {
 	# store changed settings
-	open FILE, ">$conf" or die "[-] Could not open filename: $!\n";
+	open FILE, ">$conf" or die "Could not open config: $!\n";
 	print FILE "font=\"$conf_font\"\n";
 	print FILE "bg=\"$conf_bg\"\n";
 	print FILE "fg=\"$conf_fg\"\n";
+	print FILE "w=\"$conf_w\"\n";
+	print FILE "h=\"$conf_h\"\n";
 	close FILE;
 	
 	# cleanup and exit
