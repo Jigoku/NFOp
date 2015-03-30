@@ -4,10 +4,12 @@ master
   * interface cleanups
   * added install script
   * can give nfo file as argument to nfop
+  * statusbar state restored on launch
+  * width/height restored on launch
 
 0.2 bones 29/03/2015
 -----------------------------
-  add support to store user settings
+  * add support to store user settings
 
 
 0.1 bugs 28/03/2015
