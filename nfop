@@ -34,12 +34,14 @@ my (
 	$filechooser,
 	$textview,
 	$fontbutton,
+	$sb,
 	$buffer,
 	$conf_bg,
 	$conf_fg,
 	$conf_font,
 	$conf_w,
 	$conf_h,
+	$conf_sb,
 );
 
 my $text = "";
@@ -53,6 +55,7 @@ if ( ! -e $conf ) {
 	print FILE "fg=\"#f000f000f000\"\n";
 	print FILE "w=\"520\"\n";
 	print FILE "h=\"660\"\n";
+	print FILE "statusbar=\"1\"\n";
 	close FILE;
 }
 
@@ -70,6 +73,7 @@ sub load_config {
 		if ($line =~ m/^fg=\"(.+)\"/) { $conf_fg = $1; }
 		if ($line =~ m/^w=\"(.+)\"/) { $conf_w = $1; }
 		if ($line =~ m/^h=\"(.+)\"/) { $conf_h = $1; }
+		if ($line =~ m/^statusbar=\"(.+)\"/) { $conf_sb = $1; }
 	}
 }
 
@@ -98,6 +102,7 @@ sub main {
 	$filechooser = $builder->get_object( 'filechooserdialog' );
 	$textview = $builder->get_object( 'textview' );
 	$fontbutton = $builder->get_object('fontbutton');
+	$sb = $builder->get_object( 'statusbar' );
 	$buffer = $textview->get_buffer;
 	
 	#font
@@ -131,8 +136,11 @@ sub main {
 	set_bg_colour();
 	set_fg_colour();
 
+	# is statusbar enabled?
+	if ($conf_sb == 1) { $sb->show; } else { $sb->hide; }
+	
 	# draw the window
-	$window->show_all();
+	$window->show();
 
 	# main loop
 	Gtk2->main();
@@ -269,14 +277,12 @@ sub set_default_font($) {
 	set_textview_font($font);
 }
 
-sub on_menuitem_statusbar_activate {
-	my $sb = $builder->get_object( 'statusbar' );
-	
+sub on_menuitem_statusbar_activate {	
 	# toggle visibility of the statusbar
 	if ($sb->visible == 1) {
-		$sb->hide_all(); 
+		$sb->hide_all(); $conf_sb = 0;
 	} else { 
-		$sb->show_all(); 
+		$sb->show_all(); $conf_sb = 1;
 	}
 }
 
@@ -301,6 +307,7 @@ sub gtk_main_quit {
 	print FILE "fg=\"$conf_fg\"\n";
 	print FILE "w=\"$conf_w\"\n";
 	print FILE "h=\"$conf_h\"\n";
+	print FILE "statusbar=\"$conf_sb\"\n";
 	close FILE;
 	
 	# cleanup and exit
