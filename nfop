@@ -28,7 +28,7 @@ my $data = $Bin . "/data/";
 my $xml	= $data . "gui.xml";
 my $conf = $ENV{ HOME } . "/.nfop";
 
-if ( ! -e $xml ) { die "[-] Interface: '$xml' $!"; }
+if ( ! -e $xml ) { die "Interface: '$xml' $!"; }
 
 if ( ! -e $conf ) { 
 	print "creating config: " . $conf . "\n"; 
@@ -60,7 +60,7 @@ gtk_main_quit();
 
 sub load_config {
 	# read "~/.nfop" settings
-	open FILE, "<$conf" or die "[-] Could not open filename: $!\n";
+	open FILE, "<$conf" or die "Could not read config: $!\n";
 	foreach my $line (<FILE>) {
 		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; } 
 		if ($line =~ m/^bg=\"(.+)\"/) { $conf_bg = $1; }

@@ -21,15 +21,15 @@
     <property name="website_label" translatable="yes">nfop @ github</property>
     <property name="license" translatable="yes">Code:
 General Public License v3.0
-&lt;https://www.gnu.org/licenses/gpl-3.0.html&gt;
+https://www.gnu.org/licenses/gpl-3.0.html
 
 Artwork:
 Creative Commons (Attribution 3.0 Unported) 
 &lt;https://creativecommons.org/licenses/by/3.0/&gt;</property>
     <property name="authors">Ricky Thomson
-&lt;https://github.com/jigoku&gt;</property>
+https://github.com/jigoku</property>
     <property name="artists">Victor Petrovich Ivlichev
-&lt;https://www.iconfinder.com/krasnoyarsk&gt;</property>
+https://www.iconfinder.com/krasnoyarsk</property>
     <property name="logo">icon128.png</property>
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox1">
