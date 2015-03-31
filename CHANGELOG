@@ -6,6 +6,7 @@ master
   * can give nfo file as argument to nfop
   * statusbar state restored on launch
   * width/height restored on launch
+  * better parsing of config file
 
 0.2 bones 29/03/2015
 -----------------------------

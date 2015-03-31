@@ -14,6 +14,8 @@
 # GNU General Public License for more details.
 # u should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
+ 
+use feature ":5.10";
 
 use strict;
 use warnings;
@@ -53,35 +55,39 @@ my $text = "";
 
 
 
-
 main();
 gtk_main_quit();
 
 
 
-sub main {
+sub main {	
+	# read "~/.nfop" settings
+	if (-e $conf) {
+		open FILE, "<$conf" or die "Could not read config: $!\n";
+		for (<FILE>) {
+			no warnings;
+			# perl 5.10 experimental functions
+			given($_) {
+				when (m/^font=\"(.+)\"/) { $settings{"font"} = $1; } 
+				when (m/^background=\"(.+)\"/) { $settings{"background"} = $1; }
+				when ( m/^foreground=\"(.+)\"/) { $settings{"foreground"} = $1; }
+				when (m/^width=\"(.+)\"/) { $settings{"width"} = $1; }
+				when ( m/^height=\"(.+)\"/) { $settings{"height"} = $1; }
+				when ( m/^statusbar=\"(.+)\"/) { $settings{"statusbar"} = $1; }
+				
+			}
+		}
+	}
 	
 	# check for built in flags
 	if ( defined $ARGV[0] ) {
 		if ( $ARGV[0] =~ m/(--version|-v)/ ) { print "nfop $version\n"; exit(0); }
 		if ( $ARGV[0] =~ m/(--help|-h)/ ) { print "Usage:\t$0 <filename>\n"; exit(0); }
+		# TODO; use @ARGV instead, loop, and add "--background|-bg" etc...
 	}
 
 	# check libglade xml exists
 	if ( ! -e $xml ) { die "Interface: '$xml' $!"; }
-
-	# read "~/.nfop" settings
-	if (-e $conf) {
-		open FILE, "<$conf" or die "Could not read config: $!\n";
-		foreach my $line (<FILE>) {
-			if ($line =~ m/^font=\"(.+)\"/) { $settings{"font"} = $1; } 
-			if ($line =~ m/^background=\"(.+)\"/) { $settings{"background"} = $1; }
-			if ($line =~ m/^foreground=\"(.+)\"/) { $settings{"foreground"} = $1; }
-			if ($line =~ m/^width=\"(.+)\"/) { $settings{"width"} = $1; }
-			if ($line =~ m/^height=\"(.+)\"/) { $settings{"height"} = $1; }
-			if ($line =~ m/^statusbar=\"(.+)\"/) { $settings{"statusbar"} = $1; }
-		}
-	}
 	
 	$builder = Gtk2::Builder->new();
 	
