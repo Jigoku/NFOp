@@ -252,6 +252,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip-text" translatable="yes">font selection</property>
                 <signal handler="on_fontbutton_font_set" name="font_set" swapped="no"/>
               </object>
               <packing>

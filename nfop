@@ -37,46 +37,27 @@ my (
 	$fontbutton,
 	$sb,
 	$buffer,
-	$conf_bg,
-	$conf_fg,
-	$conf_font,
-	$conf_w,
-	$conf_h,
-	$conf_sb,
+);
+
+# default settings
+my 	%settings = (
+	"font" 		 => "Monospace 8",
+	"background" => "#000000000000",
+	"foreground" => "#f000f000f000",
+	"width" 	 => 520,
+	"height" 	 => 660,
+	"statusbar"  => 1
 );
 
 my $text = "";
 
-# create the default user config
-if ( ! -e $conf ) { 
-	print "creating config: " . $conf . "\n"; 
-	open FILE, ">", $conf or warn $!; 
-	print FILE "font=\"Monospace 8\"\n";
-	print FILE "bg=\"#000000000000\"\n";
-	print FILE "fg=\"#f000f000f000\"\n";
-	print FILE "w=\"520\"\n";
-	print FILE "h=\"660\"\n";
-	print FILE "statusbar=\"1\"\n";
-	close FILE;
-}
 
-load_config();
+
+
 main();
 gtk_main_quit();
 
 
-sub load_config {
-	# read "~/.nfop" settings
-	open FILE, "<$conf" or die "Could not read config: $!\n";
-	foreach my $line (<FILE>) {
-		if ($line =~ m/^font=\"(.+)\"/) { $conf_font = $1; } 
-		if ($line =~ m/^bg=\"(.+)\"/) { $conf_bg = $1; }
-		if ($line =~ m/^fg=\"(.+)\"/) { $conf_fg = $1; }
-		if ($line =~ m/^w=\"(.+)\"/) { $conf_w = $1; }
-		if ($line =~ m/^h=\"(.+)\"/) { $conf_h = $1; }
-		if ($line =~ m/^statusbar=\"(.+)\"/) { $conf_sb = $1; }
-	}
-}
 
 sub main {
 	
@@ -89,6 +70,18 @@ sub main {
 	# check libglade xml exists
 	if ( ! -e $xml ) { die "Interface: '$xml' $!"; }
 
+	# read "~/.nfop" settings
+	if (-e $conf) {
+		open FILE, "<$conf" or die "Could not read config: $!\n";
+		foreach my $line (<FILE>) {
+			if ($line =~ m/^font=\"(.+)\"/) { $settings{"font"} = $1; } 
+			if ($line =~ m/^background=\"(.+)\"/) { $settings{"background"} = $1; }
+			if ($line =~ m/^foreground=\"(.+)\"/) { $settings{"foreground"} = $1; }
+			if ($line =~ m/^width=\"(.+)\"/) { $settings{"width"} = $1; }
+			if ($line =~ m/^height=\"(.+)\"/) { $settings{"height"} = $1; }
+			if ($line =~ m/^statusbar=\"(.+)\"/) { $settings{"statusbar"} = $1; }
+		}
+	}
 	
 	$builder = Gtk2::Builder->new();
 	
@@ -107,13 +100,13 @@ sub main {
 	$buffer = $textview->get_buffer;
 	
 	#font
-	set_default_font($conf_font);
+	set_default_font($settings{"font"});
 	
-	$window->set_default_size($conf_w, $conf_h);
+	$window->set_default_size($settings{"width"}, $settings{"height"});
 
 	# apply colour to colour buttons
-	$builder->get_object( 'colourbutton_fg' )->set_color(Gtk2::Gdk::Color->parse($conf_fg));
-	$builder->get_object( 'colourbutton_bg' )->set_color(Gtk2::Gdk::Color->parse($conf_bg));
+	$builder->get_object( 'colourbutton_fg' )->set_color(Gtk2::Gdk::Color->parse($settings{"foreground"}));
+	$builder->get_object( 'colourbutton_bg' )->set_color(Gtk2::Gdk::Color->parse($settings{"background"}));
 
 
 	# check for arguments as filename
@@ -135,7 +128,7 @@ sub main {
 	set_fg_colour();
 
 	# is statusbar enabled?
-	if ($conf_sb == 1) { $sb->show; } else { $sb->hide; }
+	if ($settings{"statusbar"} == 1) { $sb->show; } else { $sb->hide; }
 	
 	# draw the window
 	$window->show();
@@ -152,20 +145,20 @@ sub on_about_clicked {
 	$about->hide;
 }
 
-sub create_filefilter($$) {
+sub apply_filefilter($$$) {
 	#create a file filter
-	my ($pattern, $name) = @_;
+	my ($pattern, $name, $object) = @_;
 	
 	my $filter = Gtk2::FileFilter->new();
 	$filter->add_pattern($pattern);
 	$filter->set_name($name);
-	$filechooser->add_filter($filter);
+	$object->add_filter($filter);
 }
 
 
 sub on_openfile_clicked {
-	create_filefilter("*.nfo", "nfo files");
-	create_filefilter("*", "all files");
+	apply_filefilter("*.nfo", "nfo files", $filechooser);
+	apply_filefilter("*", "all files", $filechooser);
 	$filechooser->run;
 	
 	# make sure it goes away when destroyed
@@ -210,7 +203,7 @@ sub on_button_openfile_clicked($) {
 
 sub on_fontbutton_font_set {
 	set_textview_font($fontbutton->get_font_name);
-	$conf_font = $fontbutton->get_font_name;
+	$settings{"font"} = $fontbutton->get_font_name;
 }
 
 
@@ -231,7 +224,7 @@ sub set_bg_colour {
 	my $colour = $builder->get_object( 'colourbutton_bg' )->get_color->to_string;
 	
 	# update config var
-	$conf_bg = $colour;
+	$settings{"background"} = $colour;
 	
 	# background
 	$textview->modify_base(
@@ -252,7 +245,7 @@ sub set_fg_colour {
 	my $colour = $builder->get_object( 'colourbutton_fg' )->get_color->to_string;
 	
 	# update config var
-	$conf_fg = $colour;
+	$settings{"foreground"} = $colour;
 	
 	# create a tag to hold the custom colour
 	# we get segfaults if the tag exists, so this hack
@@ -280,9 +273,9 @@ sub set_default_font($) {
 sub on_menuitem_statusbar_activate {	
 	# toggle visibility of the statusbar
 	if ($sb->visible == 1) {
-		$sb->hide_all(); $conf_sb = 0;
+		$sb->hide_all(); $settings{"statusbar"} = 0;
 	} else { 
-		$sb->show_all(); $conf_sb = 1;
+		$sb->show_all(); $settings{"statusbar"}= 1;
 	}
 }
 
@@ -296,19 +289,24 @@ sub on_menuitem_copy_activate {
 }
 
 sub on_window_check_resize {
-		($conf_w, $conf_h) = $window->get_size;
+		($settings{"width"}, $settings{"height"}) = $window->get_size;
+}
+
+sub write_config($) {
+	my $file = shift;
+	open FILE, ">$file" or die "Could not open config: $!\n";
+	print FILE "font=\"".$settings{"font"}."\"\n";
+	print FILE "background=\"".$settings{"background"}."\"\n";
+	print FILE "foreground=\"".$settings{"foreground"}."\"\n";
+	print FILE "width=\"".$settings{"width"}."\"\n";
+	print FILE "height=\"".$settings{"height"}."\"\n";
+	print FILE "statusbar=\"".$settings{"statusbar"}."\"\n";
+	close FILE;
 }
 
 sub gtk_main_quit {
 	# store changed settings
-	open FILE, ">$conf" or die "Could not open config: $!\n";
-	print FILE "font=\"$conf_font\"\n";
-	print FILE "bg=\"$conf_bg\"\n";
-	print FILE "fg=\"$conf_fg\"\n";
-	print FILE "w=\"$conf_w\"\n";
-	print FILE "h=\"$conf_h\"\n";
-	print FILE "statusbar=\"$conf_sb\"\n";
-	close FILE;
+	write_config($conf);
 	
 	# cleanup and exit
 	$window->destroy;
