@@ -23,3 +23,11 @@ Install for package:
 # PREFIX=${PKGDIR}/usr/ ./install
 
 ```
+
+### Runtime Dependencies
+* perl (>=5.10)
+* gtk (2.24)
+
+#### Perl modules
+* Gtk2
+* Gtk2::Pango
