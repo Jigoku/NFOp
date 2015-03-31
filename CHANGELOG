@@ -1,4 +1,4 @@
-master
+0.3 bats 31/03/2015
 -----------------------------
   * fix gdk colour decoding
   * interface cleanups
@@ -8,6 +8,7 @@ master
   * width/height restored on launch
   * better parsing of config file
   * now requires perl >=5.10
+
 
 0.2 bones 29/03/2015
 -----------------------------
