@@ -85,7 +85,7 @@
     </ui>
   </object>
   <!-- interface-requires gtk+ 2.24 -->
-  <!-- interface-naming-policy project-wide -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkAboutDialog" id="aboutdialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -116,10 +116,10 @@ https://github.com/jigoku</property>
 https://www.iconfinder.com/krasnoyarsk</property>
     <property name="logo">icon128.png</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="aboutdialog_vbox">
         <property name="can_focus">False</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area1">
+          <object class="GtkHButtonBox" id="aboutdialog-action_area">
             <property name="can_focus">False</property>
           </object>
           <packing>
@@ -144,12 +144,12 @@ https://www.iconfinder.com/krasnoyarsk</property>
     <property name="create_folders">False</property>
     <property name="use_preview_label">False</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox">
+      <object class="GtkVBox" id="filechooserdialog_vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
-          <object class="GtkHButtonBox" id="dialog-action_area">
+          <object class="GtkHButtonBox" id="filechooserdialog-action_area">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -208,7 +208,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox">
+          <object class="GtkHBox" id="hbox_tools">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -216,6 +216,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip-text" translatable="yes">foreground colour</property>
                 <property name="color">#000000000000</property>
                 <signal handler="set_fg_colour" name="color_set" swapped="no"/>
               </object>
@@ -230,6 +231,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip-text" translatable="yes">background colour</property>
                 <property name="color">#000000000000</property>
                 <signal handler="set_bg_colour" name="color_set" swapped="no"/>
               </object>
@@ -259,7 +261,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
               </packing>
             </child>
             <child>
-              <object class="GtkAlignment" id="alignment1">
+              <object class="GtkAlignment" id="menubar_spacer">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -280,14 +282,14 @@ https://www.iconfinder.com/krasnoyarsk</property>
           </packing>
         </child>
         <child>
-          <object class="GtkHBox" id="hbox1">
+          <object class="GtkHBox" id="hbox_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <placeholder/>
             </child>
             <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow">
+              <object class="GtkScrolledWindow" id="scrolled_textview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>

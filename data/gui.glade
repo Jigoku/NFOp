@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glade-interface>
   <!-- interface-requires gtk+ 2.24 -->
-  <!-- interface-naming-policy project-wide -->
+  <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkAboutDialog" id="aboutdialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
@@ -32,10 +32,10 @@ https://github.com/jigoku</property>
 https://www.iconfinder.com/krasnoyarsk</property>
     <property name="logo">icon128.png</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox1">
+      <widget class="GtkVBox" id="aboutdialog_vbox">
         <property name="can_focus">False</property>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area1">
+          <widget class="GtkHButtonBox" id="aboutdialog-action_area">
             <property name="can_focus">False</property>
           </widget>
           <packing>
@@ -60,12 +60,12 @@ https://www.iconfinder.com/krasnoyarsk</property>
     <property name="create_folders">False</property>
     <property name="use_preview_label">False</property>
     <child internal-child="vbox">
-      <widget class="GtkVBox" id="dialog-vbox">
+      <widget class="GtkVBox" id="filechooserdialog_vbox">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="spacing">2</property>
         <child internal-child="action_area">
-          <widget class="GtkHButtonBox" id="dialog-action_area">
+          <widget class="GtkHButtonBox" id="filechooserdialog-action_area">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="layout_style">end</property>
@@ -123,7 +123,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="label" translatable="yes">_File</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu1">
+                  <widget class="GtkMenu" id="file">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -163,7 +163,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="label" translatable="yes">_Edit</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu2">
+                  <widget class="GtkMenu" id="edit">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -187,7 +187,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="label" translatable="yes">_View</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu3">
+                  <widget class="GtkMenu" id="view">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -217,7 +217,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="label" translatable="yes">_Help</property>
                 <property name="use_underline">True</property>
                 <child>
-                  <widget class="GtkMenu" id="menu5">
+                  <widget class="GtkMenu" id="help">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
@@ -242,7 +242,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox">
+          <widget class="GtkHBox" id="hbox_tools">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
@@ -250,6 +250,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">foreground colour</property>
                 <property name="color">#000000000000</property>
                 <signal name="color_set" handler="set_fg_colour" swapped="no"/>
               </widget>
@@ -264,6 +265,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">background colour</property>
                 <property name="color">#000000000000</property>
                 <signal name="color_set" handler="set_bg_colour" swapped="no"/>
               </widget>
@@ -284,6 +286,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="tooltip" translatable="yes">font selection</property>
                 <signal name="font_set" handler="on_fontbutton_font_set" swapped="no"/>
               </widget>
               <packing>
@@ -293,7 +296,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkAlignment" id="alignment1">
+              <widget class="GtkAlignment" id="menubar_spacer">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
@@ -314,14 +317,14 @@ https://www.iconfinder.com/krasnoyarsk</property>
           </packing>
         </child>
         <child>
-          <widget class="GtkHBox" id="hbox1">
+          <widget class="GtkHBox" id="hbox_main">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
               <placeholder/>
             </child>
             <child>
-              <widget class="GtkScrolledWindow" id="scrolledwindow">
+              <widget class="GtkScrolledWindow" id="scrolled_textview">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="hscrollbar_policy">automatic</property>

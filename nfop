@@ -20,6 +20,7 @@ use warnings;
 use utf8;
 
 use Gtk2 qw(init);
+use Glib qw(TRUE FALSE);
 use FindBin qw($Bin); 
 use File::Basename;
 
@@ -46,7 +47,7 @@ my (
 
 my $text = "";
 
-# create the user config
+# create the default user config
 if ( ! -e $conf ) { 
 	print "creating config: " . $conf . "\n"; 
 	open FILE, ">", $conf or warn $!; 
@@ -110,16 +111,12 @@ sub main {
 	
 	$window->set_default_size($conf_w, $conf_h);
 
-	# foreground colour button
-	my $colourbutton_fg = $builder->get_object( 'colourbutton_fg' );
-	$colourbutton_fg->set_color(Gtk2::Gdk::Color->parse($conf_fg));
-	$colourbutton_fg->set_tooltip_markup( "foreground colour" );
+	# apply colour to colour buttons
+	$builder->get_object( 'colourbutton_fg' )->set_color(Gtk2::Gdk::Color->parse($conf_fg));
+	$builder->get_object( 'colourbutton_bg' )->set_color(Gtk2::Gdk::Color->parse($conf_bg));
 
-	# background colour button
-	my $colourbutton_bg = $builder->get_object( 'colourbutton_bg' );
-	$colourbutton_bg->set_color(Gtk2::Gdk::Color->parse($conf_bg));
-	$colourbutton_bg->set_tooltip_markup( "background colour" );
 
+	# check for arguments as filename
 	my $file = $ARGV[0];
 	if (defined $file) { 
 		if (-e $file) {
@@ -133,6 +130,7 @@ sub main {
 		}	
 	}
 
+	# set the initial textbuffer colours
 	set_bg_colour();
 	set_fg_colour();
 
