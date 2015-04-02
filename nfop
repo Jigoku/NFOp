@@ -182,10 +182,10 @@ sub load_nfo($) {
 	
 	while (<FILE>){
 		# parse to a string	
-		$text .= $_;
+		#$text .= $_;
 		
 		# TODO: parse as formatted ansi palette
-		#$text .= scan_char($_);
+		$text .= scan_char($_);
 	}
 	
 	
@@ -217,12 +217,14 @@ sub scan_char($) {
 	$hex = chr(0x0061); # "a"
 	
 	foreach my $char (@text) {
-		if ($char =~ m/$hex/) { 
-			# NOTE: produces extra spaces, can't figure out why...
-			$char = colour_char($hex);
+		no warnings;
+		given($char) {
+			when (m/$hex/) { $char = colour_char($hex) }
 		}
+			# NOTE: produces extra spaces, can't figure out why...
+			#$char = colour_char($hex);
 	}
-	return "@text";
+	return join ('',@text);
 
 
 }
@@ -230,7 +232,7 @@ sub scan_char($) {
 sub colour_char($) {
 	# returns colour code for selected pallete
 	#place holder
-	return "@";
+	return shift;
 }
 
 sub on_button_openfile_clicked($) {
