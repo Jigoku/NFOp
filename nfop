@@ -15,18 +15,16 @@
 # u should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
  
-use feature ":5.10";
-
+use feature ":5.10"; # required for given/when functions
 use strict;
 use warnings;
 use utf8;
-
 use Gtk2 qw(init);
-use Glib qw(TRUE FALSE);
+use Gtk2::Pango;
 use FindBin qw($Bin); 
 use File::Basename;
 
-my $version	= "0.3";
+my $VERSION	= "0.3";
 my $data = $Bin . "/data/";
 my $xml	= $data . "gui.xml";
 my $conf = $ENV{ HOME } . "/.nfop";
@@ -53,11 +51,8 @@ my 	%settings = (
 
 my $text = "";
 
-
-
 main();
 gtk_main_quit();
-
 
 
 sub main {	
@@ -81,7 +76,7 @@ sub main {
 	
 	# check for built in flags
 	if ( defined $ARGV[0] ) {
-		if ( $ARGV[0] =~ m/(--version|-v)/ ) { print "nfop $version\n"; exit(0); }
+		if ( $ARGV[0] =~ m/(--version|-v)/ ) { print "nfop $VERSION\n"; exit(0); }
 		if ( $ARGV[0] =~ m/(--help|-h)/ ) { print "Usage:\t$0 <filename>\n"; exit(0); }
 		# TODO; use @ARGV instead, loop, and add "--background|-bg" etc...
 	}
@@ -105,9 +100,10 @@ sub main {
 	$sb = $builder->get_object( 'statusbar' );
 	$buffer = $textview->get_buffer;
 	
-	#font
+	# set font
 	set_default_font($settings{"font"});
 	
+	# set window dimensions
 	$window->set_default_size($settings{"width"}, $settings{"height"});
 
 	# apply colour to colour buttons
@@ -163,8 +159,11 @@ sub apply_filefilter($$$) {
 
 
 sub on_openfile_clicked {
+	# apply filters
 	apply_filefilter("*.nfo", "nfo files", $filechooser);
 	apply_filefilter("*", "all files", $filechooser);
+	
+	# show filechooser
 	$filechooser->run;
 	
 	# make sure it goes away when destroyed
@@ -182,15 +181,15 @@ sub load_nfo($) {
 	
 	while (<FILE>){
 		# parse to a string	
-		#$text .= $_;
+		$text .= $_;
 		
 		# TODO: parse as formatted ansi palette
-		$text .= scan_char($_);
+		#$text .= scan_char($_);
 	}
-	
 	
 	close FILE;
 	
+	# get the text buffer object
 	my $buffer = $textview->get_buffer;
 	
 	# set the textview buffer
@@ -207,41 +206,41 @@ sub load_nfo($) {
 
 sub scan_char($) {
 	# scan for character code
-	my @text = split(//, shift);
+	my @chars = split(//, shift);
 	my $hex;
 	
 	# https://en.wikipedia.org/wiki/Code_page_437#Characters
 	binmode STDOUT, ":encoding(CP437)";
 	
 	#make this global @array of character map
-	$hex = chr(0x0061); # "a"
+	$hex = chr(0x2588); # "a"
 	
-	foreach my $char (@text) {
-		no warnings;
-		given($char) {
-			when (m/$hex/) { $char = colour_char($hex) }
+	for (my $i=0;$i<=scalar(@chars);$i++) {
+		if (defined($chars[$i]) && ($chars[$i] =~ m/$hex/)) {
+			$chars[$i] = colour_char($hex,$i);
 		}
-			# NOTE: produces extra spaces, can't figure out why...
-			#$char = colour_char($hex);
 	}
-	return join ('',@text);
+	return join ('',@chars);
 
 
 }
 
-sub colour_char($) {
+sub colour_char {
 	# returns colour code for selected pallete
-	#place holder
-	return shift;
+	# place holder (might not be implemented)
+
+	
+	return;
 }
 
 sub on_button_openfile_clicked($) {
+	# open the selected file
 	$filechooser->hide;
 	load_nfo($filechooser->get_filename);
-
 }
 
 sub on_fontbutton_font_set {
+	# set the desired font 
 	set_textview_font($fontbutton->get_font_name);
 	$settings{"font"} = $fontbutton->get_font_name;
 }
@@ -249,14 +248,12 @@ sub on_fontbutton_font_set {
 
 
 sub set_textview_font($) {
-	# convert font string to font
+	# convert font string to font description
 	$textview->modify_font(	
 		Gtk2::Pango::FontDescription->from_string(
 			shift
 		)
 	);
-	
-
 }
 
 sub set_bg_colour {
@@ -290,6 +287,7 @@ sub set_fg_colour {
 	# create a tag to hold the custom colour
 	# we get segfaults if the tag exists, so this hack
 	# just makes a randomly named tag.
+	# a tag can already exist if the user selects the same colour twice.....
 	
 	my $tag = $buffer->create_tag(
 		rand(10000)."_foreground", 
@@ -329,12 +327,15 @@ sub on_menuitem_copy_activate {
 }
 
 sub on_window_check_resize {
-		($settings{"width"}, $settings{"height"}) = $window->get_size;
+	# update config values for saving on exit
+	($settings{"width"}, $settings{"height"}) = $window->get_size;
 }
 
 sub write_config($) {
+	# write the changed settings to ~/.nfop config
 	my $file = shift;
 	open FILE, ">$file" or die "Could not open config: $!\n";
+	print FILE "# nfop $VERSION - user settings\n";
 	print FILE "font=\"".$settings{"font"}."\"\n";
 	print FILE "background=\"".$settings{"background"}."\"\n";
 	print FILE "foreground=\"".$settings{"foreground"}."\"\n";
@@ -351,6 +352,7 @@ sub gtk_main_quit {
 	# cleanup and exit
 	$window->destroy;
 	
+	# bye bye
 	Gtk2->main_quit();
 	exit(0);
 }
