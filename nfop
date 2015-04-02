@@ -181,9 +181,13 @@ sub load_nfo($) {
 	$text = "";
 	
 	while (<FILE>){
-		# parse to a string
+		# parse to a string	
 		$text .= $_;
+		
+		# TODO: parse as formatted ansi palette
+		#$text .= scan_char($_);
 	}
+	
 	
 	close FILE;
 	
@@ -199,6 +203,34 @@ sub load_nfo($) {
 	$builder->get_object( 'status_label' )->set_text(
 		basename($file)
 	);
+}
+
+sub scan_char($) {
+	# scan for character code
+	my @text = split(//, shift);
+	my $hex;
+	
+	# https://en.wikipedia.org/wiki/Code_page_437#Characters
+	binmode STDOUT, ":encoding(CP437)";
+	
+	#make this global @array of character map
+	$hex = chr(0x0061); # "a"
+	
+	foreach my $char (@text) {
+		if ($char =~ m/$hex/) { 
+			# NOTE: produces extra spaces, can't figure out why...
+			$char = colour_char($hex);
+		}
+	}
+	return "@text";
+
+
+}
+
+sub colour_char($) {
+	# returns colour code for selected pallete
+	#place holder
+	return "@";
 }
 
 sub on_button_openfile_clicked($) {
