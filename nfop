@@ -178,9 +178,6 @@ sub load_nfo($) {
 	# reinitialize
 	$text = "";
 	
-	# update the colour
-	set_fg_colour();
-	
 	while (<FILE>){
 		# parse to a string	
 		$text .= $_;
@@ -196,7 +193,8 @@ sub load_nfo($) {
 	# set the textview buffer
 	$buffer->set_text($text);
 	
-
+	# update the colour
+	set_fg_colour();
 	
 	# show filename in statusbar
 	$builder->get_object( 'status_label' )->set_text(
@@ -210,7 +208,7 @@ sub scan_char($) {
 	
 	# https://en.wikipedia.org/wiki/Code_page_437#Characters
 	binmode STDOUT, ":encoding(CP437)";
-	
+	my $hex;
 	#make this global @array of character map
 	$hex = chr(0x2588); # "a"
 	
