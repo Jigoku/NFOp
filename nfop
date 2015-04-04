@@ -52,7 +52,7 @@ my 	%settings = (
 my $text = "";
 
 main();
-gtk_main_quit();
+
 
 
 sub main {	
@@ -65,11 +65,10 @@ sub main {
 			given($_) {
 				when (m/^font=\"(.+)\"/) { $settings{"font"} = $1; } 
 				when (m/^background=\"(.+)\"/) { $settings{"background"} = $1; }
-				when ( m/^foreground=\"(.+)\"/) { $settings{"foreground"} = $1; }
+				when (m/^foreground=\"(.+)\"/) { $settings{"foreground"} = $1; }
 				when (m/^width=\"(.+)\"/) { $settings{"width"} = $1; }
-				when ( m/^height=\"(.+)\"/) { $settings{"height"} = $1; }
-				when ( m/^statusbar=\"(.+)\"/) { $settings{"statusbar"} = $1; }
-				
+				when (m/^height=\"(.+)\"/) { $settings{"height"} = $1; }
+				when (m/^statusbar=\"(.+)\"/) { $settings{"statusbar"} = $1; }
 			}
 		}
 	}
@@ -136,7 +135,7 @@ sub main {
 	$window->show();
 
 	# main loop
-	Gtk2->main();
+	Gtk2->main(); gtk_main_quit();
 }
 
 sub on_about_clicked {
@@ -290,7 +289,7 @@ sub set_fg_colour {
 	# a tag can already exist if the user selects the same colour twice.....
 	
 	my $tag = $buffer->create_tag(
-		rand(10000)."_foreground", 
+		undef,
 		foreground => $colour
 	);
 	
