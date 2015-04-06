@@ -1,3 +1,8 @@
+0.3.1 06/04/2015
+-----------------------------
+  * fix foreground colour tag names (3ef4263)
+  * code cleanups
+
 0.3 bats 31/03/2015
 -----------------------------
   * fix gdk colour decoding

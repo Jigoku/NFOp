@@ -24,7 +24,7 @@ use Gtk2::Pango;
 use FindBin qw($Bin); 
 use File::Basename;
 
-my $VERSION	= "0.3";
+my $VERSION	= "0.3.1";
 my $data = $Bin . "/data/";
 my $xml	= $data . "gui.xml";
 my $conf = $ENV{ HOME } . "/.nfop";
@@ -231,7 +231,7 @@ sub colour_char($) {
 	);
 	
 	# apply the tag to entire buffer
-	my $start = $buffer->get_iter_at_offset ($iter+100);
+	my $start = $buffer->get_iter_at_offset ($iter);
 	my $end = $buffer->get_iter_at_offset ($iter);
 	$buffer->apply_tag ($tag, $start, $end);
 }

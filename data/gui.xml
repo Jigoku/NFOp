@@ -98,7 +98,7 @@
     <property name="transient_for">window</property>
     <property name="has_separator">True</property>
     <property name="program_name">nfop</property>
-    <property name="version">0.3</property>
+    <property name="version">0.3.1</property>
     <property name="copyright" translatable="yes">Ricky Thomson (C) 2015</property>
     <property name="comments" translatable="yes">A simple NFO viewer</property>
     <property name="website">http://github.com/jigoku/nfop</property>
@@ -216,6 +216,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
                 <property name="tooltip-text" translatable="yes">foreground colour</property>
                 <property name="color">#000000000000</property>
                 <signal handler="set_fg_colour" name="color_set" swapped="no"/>
@@ -231,6 +232,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
                 <property name="tooltip-text" translatable="yes">background colour</property>
                 <property name="color">#000000000000</property>
                 <signal handler="set_bg_colour" name="color_set" swapped="no"/>
@@ -252,6 +254,7 @@ https://www.iconfinder.com/krasnoyarsk</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="has_tooltip">True</property>
                 <property name="tooltip-text" translatable="yes">font selection</property>
                 <signal handler="on_fontbutton_font_set" name="font_set" swapped="no"/>
               </object>
