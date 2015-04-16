@@ -1,3 +1,8 @@
+master 
+-----------------------------
+  * convert interface to gtkbuild format (79519d4)
+  * add Gtk2::CheckMenuItem for statusbar (79519d4)
+
 0.3.1 06/04/2015
 -----------------------------
   * fix foreground colour tag names (3ef4263)
