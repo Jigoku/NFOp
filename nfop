@@ -26,7 +26,7 @@ use File::Basename;
 
 my $VERSION	= "0.3.1";
 my $data = $Bin . "/data/";
-my $xml	= $data . "gui.xml";
+my $xml	= $data . "gui.glade";
 my $conf = $ENV{ HOME } . "/.nfop";
 
 my (
@@ -109,7 +109,7 @@ sub main {
 	$builder->get_object( 'colourbutton_fg' )->set_color(Gtk2::Gdk::Color->parse($settings{"foreground"}));
 	$builder->get_object( 'colourbutton_bg' )->set_color(Gtk2::Gdk::Color->parse($settings{"background"}));
 
-
+	$builder->get_object( 'view_statusbar' )->set_active($settings{"statusbar"});
 	# check for arguments as filename
 	my $file = $ARGV[0];
 	if (defined $file) { 
@@ -311,12 +311,16 @@ sub set_default_font($) {
 	set_textview_font($font);
 }
 
-sub on_menuitem_statusbar_activate {	
-	# toggle visibility of the statusbar
-	if ($sb->visible == 1) {
-		$sb->hide_all(); $settings{"statusbar"} = 0;
-	} else { 
-		$sb->show_all(); $settings{"statusbar"}= 1;
+sub on_view_statusbar_toggled {	
+	my $check 	  = $builder->get_object( 'view_statusbar' );
+	my $statusbar = $builder->get_object( 'statusbar' );
+	
+	if ($check->get_active == 1) {
+		$statusbar->set_visible(1);
+		$settings{"statusbar"}= 1;
+	} else {
+		$statusbar->set_visible(0);
+		$settings{"statusbar"} = 0;
 	}
 }
 
