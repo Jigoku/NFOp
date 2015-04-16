@@ -2,9 +2,6 @@
 # prefix for package/install directory
 PREFIX=${PREFIX:-/usr/local/}
 
-# generate libglade compatible xml
-gtk-builder-convert data/gui.glade data/gui.xml
-
 mkdir -p $PREFIX/{share/nfop,bin}
 
 perl -pi'*.bak' -e's,\ \$Bin\ .\ \"/data/\",\"\'$PREFIX'\/share\/nfop\/\",' nfop

@@ -1,4 +1,4 @@
-master 
+0.3.2 16/04/2015
 -----------------------------
   * convert interface to gtkbuild format (79519d4)
   * add Gtk2::CheckMenuItem for statusbar (79519d4)
