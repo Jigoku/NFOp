@@ -6,7 +6,7 @@ mkdir -p $PREFIX/{share/nfop,bin}
 
 perl -pi'*.bak' -e's,\ \$Bin\ .\ \"/data/\",\"\'$PREFIX'\/share\/nfop\/\",' nfop
 
-install -Dm644 data/gui.xml $PREFIX/share/nfop/gui.xml
+install -Dm644 data/glade.xml $PREFIX/share/nfop/glade.xml
 install -Dm644 data/icon48.png $PREFIX/share/nfop/icon48.png
 install -Dm644 data/icon128.png $PREFIX/share/nfop/icon128.png
 install -Dm755 nfop $PREFIX/bin/nfop
