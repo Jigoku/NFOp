@@ -1,13 +1,11 @@
 # nfop
-NFO Viewer for *nix, using Gtk2/perl
-* A small application to display scene release *.nfo files
+nfop is a small application to display scene release (*.nfo) files in the correct [Codepage 437](https://en.wikipedia.org/wiki/Code_page_437) display format.
 
 ### Features
 * [Codepage 437](https://en.wikipedia.org/wiki/Code_page_437) display
 * Colour/font customization
-* Saves your settings
+* User settings
 
-### Screenshot
 ![screenshot](https://cloud.githubusercontent.com/assets/1535179/6919067/be341eee-d7ab-11e4-8ad2-9a88b85440de.png)
 
 ### Releases
